@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { usePrivy } from "@privy-io/react-auth";
 import "./App.css";
-import PostArticle from './components/PostArticle'; // Make sure this path is correct
-import Profile from './components/Profile'; // Make sure this path is correct
-import faxxLogo from "./faxx_dark.png"; // Make sure this path is correct
+import PostArticle from './components/PostArticle';
+import Profile from './components/Profile';
+import faxxLogo from "./faxx_dark.png";
+import "react-mde/lib/styles/css/react-mde-all.css";
 
 function App() {
   const { ready, authenticated, login, logout } = usePrivy();
-  const [showPostArticle, setShowPostArticle] = useState(false);
-  const [showProfile, setShowProfile] = useState(false);
+  const [currentPage, setCurrentPage] = useState('home');
   const [showDropdown, setShowDropdown] = useState(false);
   const [error, setError] = useState(null);
 
@@ -38,17 +38,45 @@ function App() {
   }
 
   const handleLogout = () => {
-    setShowPostArticle(false);
-    setShowProfile(false);
+    setCurrentPage('home');
     setShowDropdown(false);
     logout();
+  };
+
+  const renderMainContent = () => {
+    switch (currentPage) {
+      case 'profile':
+        return <Profile />;
+      case 'postArticle':
+        return <PostArticle />;
+      default:
+        return (
+          <>
+            <div className="bg-white bg-opacity-10 rounded-xl p-8 mb-8 w-full max-w-2xl">
+              <h2 className="text-2xl text-white mb-4">News Feed Placeholder</h2>
+              <p className="text-gray-300">Your news feed will appear here.</p>
+            </div>
+            <button
+              onClick={() => setCurrentPage('postArticle')}
+              className="px-6 py-3 bg-blue-600 text-white font-semibold rounded-full shadow-lg transition duration-300 ease-in-out hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+            >
+              Post News
+            </button>
+          </>
+        );
+    }
   };
 
   try {
     return (
       <div className="App bg-gradient-to-br from-gray-900 via-purple-900 to-violet-900 min-h-screen flex flex-col">
         <header className="p-4 flex justify-between items-center">
-          <img src={faxxLogo} alt="Faxx Logo" className="w-24" />
+          <img 
+            src={faxxLogo} 
+            alt="Faxx Logo" 
+            className="w-24 cursor-pointer" 
+            onClick={() => setCurrentPage('home')}
+          />
           <div className="relative">
             <button 
               onClick={() => setShowDropdown(!showDropdown)}
@@ -61,7 +89,7 @@ function App() {
             {showDropdown && (
               <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1">
                 <button 
-                  onClick={() => {setShowProfile(true); setShowDropdown(false); setShowPostArticle(false);}}
+                  onClick={() => {setCurrentPage('profile'); setShowDropdown(false);}}
                   className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                 >
                   Profile
@@ -78,24 +106,7 @@ function App() {
         </header>
 
         <main className="flex-grow flex flex-col items-center justify-center p-4">
-          {showProfile ? (
-            <Profile />
-          ) : showPostArticle ? (
-            <PostArticle />
-          ) : (
-            <>
-              <div className="bg-white bg-opacity-10 rounded-xl p-8 mb-8 w-full max-w-2xl">
-                <h2 className="text-2xl text-white mb-4">News Feed Placeholder</h2>
-                <p className="text-gray-300">Your news feed will appear here.</p>
-              </div>
-              <button
-                onClick={() => setShowPostArticle(true)}
-                className="px-6 py-3 bg-blue-600 text-white font-semibold rounded-full shadow-lg transition duration-300 ease-in-out hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
-              >
-                Post News
-              </button>
-            </>
-          )}
+          {renderMainContent()}
         </main>
       </div>
     );
