@@ -1,6 +1,8 @@
 import "./App.css";
 import { usePrivy } from "@privy-io/react-auth";
 import faxxLogo from "./faxx_dark.png";
+import PostArticle from './components/PostArticle';
+
 
 function App() {
   const { ready, authenticated, user, login, logout } = usePrivy();
@@ -19,11 +21,12 @@ function App() {
       <div className="flex-grow backdrop-filter backdrop-blur-lg bg-black bg-opacity-30 rounded-xl p-4 shadow-2xl w-full max-w-screen-xl mx-auto overflow-hidden flex flex-col">
         {ready && authenticated ? (
           <div className="flex flex-col h-full">
-              <textarea
+              <PostArticle />
+              {/* <textarea
                 readOnly
                 value={JSON.stringify(user, null, 2)}
                 className="w-full h-full bg-gray-800 bg-opacity-50 rounded-lg p-4 text-white font-mono text-sm focus:outline-none"
-              />
+              /> */}
             <div className="mt-4 flex justify-center">
               <button 
                 onClick={logout} 
