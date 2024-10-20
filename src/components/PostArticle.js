@@ -3,6 +3,11 @@ import { usePrivy } from '@privy-io/react-auth';
 import ReactMarkdown from 'react-markdown';
 import ReactMde from "react-mde";
 import "react-mde/lib/styles/css/react-mde-all.css";
+import NewsPlatformABI from "./NewsPlatformABI.json";
+import { ethers } from "ethers";
+
+
+const contractAddress = "0x083dD231FD734ba528BDf82969E70317c139A806";
 
 function PostArticle() {
   const { authenticated, user } = usePrivy();
@@ -11,7 +16,26 @@ function PostArticle() {
   const [tags, setTags] = useState('');
   const [selectedTab, setSelectedTab] = useState("write");
   const [status, setStatus] = useState('');
-  const [references, setReferences] = useState([{ name: '', url: '' }]);
+
+  const publishArticle = async (article) => {
+    if (!window.ethereum) {
+      setStatus('Please install MetaMask to interact with this feature.');
+      return;
+    }
+
+    try {
+      const provider = new ethers.providers.Web3Provider(window.ethereum);
+      const signer = provider.getSigner();
+      const contract = new ethers.Contract(contractAddress, NewsPlatformABI, signer);
+
+      const tx = await contract.publishArticle(article.title, article.body, article.tags);
+      await tx.wait();
+      setStatus('Article successfully published on Morph Holesky Testnet!');
+    } catch (err) {
+      console.error("Error publishing article:", err);
+      setStatus('Failed to publish article.');
+    }
+  };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -21,18 +45,16 @@ function PostArticle() {
       return;
     }
 
-    // Process tags
     const processedTags = tags.split(',').map(tag => tag.trim().startsWith('#') ? tag.trim() : `#${tag.trim()}`);
 
-    // For now, we'll just log the article data
-    console.log('Article submitted:', { title, body, tags: processedTags, author: user.id, references });
+    const article = { title, body, tags: processedTags, author: user.id };
+    console.log('Article submitted:', article);
 
-    // Clear the form fields
+    await publishArticle(article);
+
     setTitle('');
     setBody('');
     setTags('');
-    setReferences([{ name: '', url: '' }]);
-    setStatus('Article submitted successfully!');
   };
 
   const handleReferenceChange = (index, field, value) => {
