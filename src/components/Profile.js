@@ -18,11 +18,31 @@ function Profile() {
     { id: 2, claim: 'Mars colonization will be possible by 2050', evidence: 'SpaceX plans indicate...' },
   ];
 
+  // Mock reputation score
+  const reputationScore = 785;
+
   return (
     <div className="flex flex-col h-full w-full max-w-4xl mx-auto px-4">
-      <h2 className="text-3xl font-bold text-white mb-8">Profile</h2>
+      <div className="mb-8 bg-gray-900 bg-opacity-50 rounded-xl p-6 border border-gray-800">
+        <div className="flex justify-between items-center">
+          <h2 className="text-3xl font-bold text-white">Profile</h2>
+          <div className="flex items-center space-x-4">
+            <div className="text-right">
+              <p className="text-gray-400 text-sm">Reputation Score</p>
+              <p className="text-white font-semibold">Truth Seeker</p>
+            </div>
+            <div className="bg-gradient-to-r from-blue-500 to-purple-600 rounded-full p-1">
+              <div className="bg-gray-900 rounded-full p-2">
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-purple-600 font-bold text-2xl">
+                  {reputationScore}
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
 
-      <div className="mb-12 bg-gray-900 bg-opacity-50 rounded-xl p-6 border border-gray-800">
+      <div className="mb-8 bg-gray-900 bg-opacity-50 rounded-xl p-6 border border-gray-800">
         <h3 className="text-2xl font-semibold mb-6 text-white">Activity</h3>
         <ul className="space-y-4">
           {activityLog.map((activity, index) => (
