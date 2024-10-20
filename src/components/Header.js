@@ -1,17 +1,27 @@
 import React from 'react';
-import { usePrivy } from "@privy-io/react-auth";
+import useAuth from "./useAuth";
 import faxxLogo from "../faxx_dark.png";
 
 function Header({ currentPage, setCurrentPage, showDropdown, setShowDropdown }) {
-  const { logout } = usePrivy();
+  const { logout, authenticated } = useAuth();
 
-  const handleLogout = () => {
-    setCurrentPage('home');
-    setShowDropdown(false);
-    logout();
+  const handleLogout = async () => {
+    try {
+      setCurrentPage('home');
+      setShowDropdown(false);
+      await logout();
+      console.log("Logout successful");
+    } catch (error) {
+      console.error("Logout failed:", error);
+      // Optionally, show an error message to the user
+    }
   };
 
   const showPostClaimButton = currentPage === 'home' || currentPage === 'profile';
+
+  if (!authenticated) {
+    // Handle unauthenticated state
+  }
 
   return (
     <div>

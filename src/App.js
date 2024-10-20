@@ -4,8 +4,11 @@ import ArticlesFeed from './components/ArticlesFeed';
 import AddFaxx from './components/AddFaxx';
 import Profile from './components/Profile';
 import PostArticle from './components/PostArticle';
+import Login from './components/Login';
+import useAuth from './components/useAuth';
 
 function App() {
+  const { authenticated, login } = useAuth();
   const [currentPage, setCurrentPage] = useState('home');
   const [showDropdown, setShowDropdown] = useState(false);
   const [isAddFaxxOpen, setIsAddFaxxOpen] = useState(false);
@@ -26,6 +29,10 @@ function App() {
         return <ArticlesFeed />;
     }
   };
+
+  if (!authenticated) {
+    return <Login onLogin={login} />;
+  }
 
   return (
     <div className="App bg-black min-h-screen flex flex-col">
