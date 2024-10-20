@@ -61,13 +61,13 @@ function AddFaxx() {
               placeholder="Reference"
               value={reference}
               onChange={(e) => handleReferenceChange(index, e.target.value)}
-              className="flex-grow p-2 rounded-md bg-white bg-opacity-20 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="flex-grow p-2 rounded-md bg-white bg-opacity-20 text-white placeholder-gray-400"
             />
             {index === references.length - 1 && (
               <button
                 type="button"
                 onClick={addReference}
-                className="p-2 rounded-full bg-blue-600 text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+                className="p-2 rounded-full bg-gray-600 text-white hover:bg-gray-700"
               >
                 <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
                   <path fillRule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clipRule="evenodd" />
@@ -76,19 +76,22 @@ function AddFaxx() {
             )}
           </div>
         ))}
-        <select
-          value={evidenceType}
-          onChange={(e) => setEvidenceType(e.target.value)}
-          className="w-full p-2 rounded-md bg-white bg-opacity-20 text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
-        >
-          <option value="supports">Supports</option>
-          <option value="challenges">Challenges</option>
-          <option value="rejects">Rejects</option>
-          <option value="context">Provides Context</option>
-        </select>
+        <div className="space-y-2">
+          <p className="text-white">How does your evidence relate to the current news?</p>
+          <select
+            value={evidenceType}
+            onChange={(e) => setEvidenceType(e.target.value)}
+            className="w-full p-2 rounded-md bg-white bg-opacity-20 text-white"
+          >
+            <option value="supports">Supports</option>
+            <option value="challenges">Challenges</option>
+            <option value="rejects">Rejects</option>
+            <option value="context">Provides Context</option>
+          </select>
+        </div>
         <button 
           type="submit" 
-          className="px-6 py-2 bg-blue-600 text-white font-semibold rounded-md shadow-md transition duration-300 ease-in-out hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+          className="px-6 py-2 bg-gray-600 text-white font-semibold rounded-md shadow-md transition duration-300 ease-in-out hover:bg-gray-700"
         >
           Submit Evidence
         </button>
