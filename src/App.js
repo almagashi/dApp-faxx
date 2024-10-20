@@ -1,16 +1,38 @@
 import React, { useState, useEffect } from 'react';
 import { usePrivy } from "@privy-io/react-auth";
 import "./App.css";
+import Header from './components/Header';
 import PostArticle from './components/PostArticle';
 import Profile from './components/Profile';
-import faxxLogo from "./faxx_dark.png";
+import NewsArticle from './components/NewsArticle';
 import "react-mde/lib/styles/css/react-mde-all.css";
 
 function App() {
-  const { ready, authenticated, login, logout } = usePrivy();
+  const { ready, authenticated, login } = usePrivy();
   const [currentPage, setCurrentPage] = useState('home');
   const [showDropdown, setShowDropdown] = useState(false);
   const [error, setError] = useState(null);
+
+  // Mock data for news articles
+  const mockArticles = [
+    {
+      id: 1,
+      title: "Breakthrough in Blockchain Technology",
+      summary: "Researchers have developed a new consensus algorithm that promises to increase transaction speeds by 1000%.",
+      author: "Jane Doe",
+      date: "2024-03-15",
+      tags: ["Blockchain", "Technology", "Research"]
+    },
+    {
+      id: 2,
+      title: "Crypto Market Sees Unprecedented Growth",
+      summary: "The total market capitalization of cryptocurrencies has surpassed $5 trillion for the first time in history.",
+      author: "John Smith",
+      date: "2024-03-14",
+      tags: ["Cryptocurrency", "Market", "Finance"]
+    },
+    // Add more mock articles as needed
+  ];
 
   useEffect(() => {
     console.log("Auth state:", { ready, authenticated });
@@ -26,22 +48,16 @@ function App() {
 
   if (!authenticated) {
     return (
-      <div className="App bg-gradient-to-br from-gray-900 via-purple-900 to-violet-900 min-h-screen flex flex-col items-center justify-center">
+      <div className="App bg-black min-h-screen flex flex-col items-center justify-center">
         <button 
           onClick={login} 
-          className="px-6 py-2 bg-gradient-to-r from-blue-600 to-teal-500 text-white font-semibold rounded-full shadow-md transition duration-300 ease-in-out hover:from-blue-700 hover:to-teal-600 hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-teal-500 backdrop-filter backdrop-blur-sm bg-opacity-70"
+          className="px-6 py-2 bg-gradient-to-r from-gray-800 to-gray-900 text-white font-semibold rounded-full shadow-md transition duration-300 ease-in-out hover:from-gray-900 hover:to-gray-800 hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-700 backdrop-filter backdrop-blur-sm bg-opacity-70"
         >
           Log In
         </button>
       </div>
     );
   }
-
-  const handleLogout = () => {
-    setCurrentPage('home');
-    setShowDropdown(false);
-    logout();
-  };
 
   const renderMainContent = () => {
     switch (currentPage) {
@@ -51,60 +67,32 @@ function App() {
         return <PostArticle />;
       default:
         return (
-          <>
-            <div className="bg-white bg-opacity-10 rounded-xl p-8 mb-8 w-full max-w-2xl">
-              <h2 className="text-2xl text-white mb-4">News Feed Placeholder</h2>
-              <p className="text-gray-300">Your news feed will appear here.</p>
-            </div>
-            <button
-              onClick={() => setCurrentPage('postArticle')}
-              className="px-6 py-3 bg-blue-600 text-white font-semibold rounded-full shadow-lg transition duration-300 ease-in-out hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
-            >
-              Post News
-            </button>
-          </>
+          <div className="w-full max-w-2xl">
+            <h2 className="text-2xl text-white mb-6">Latest News</h2>
+            {mockArticles.map(article => (
+              <NewsArticle
+                key={article.id}
+                title={article.title}
+                summary={article.summary}
+                author={article.author}
+                date={article.date}
+                tags={article.tags}
+              />
+            ))}
+          </div>
         );
     }
   };
 
   try {
     return (
-      <div className="App bg-gradient-to-br from-gray-900 via-purple-900 to-violet-900 min-h-screen flex flex-col">
-        <header className="p-4 flex justify-between items-center">
-          <img 
-            src={faxxLogo} 
-            alt="Faxx Logo" 
-            className="w-24 cursor-pointer" 
-            onClick={() => setCurrentPage('home')}
-          />
-          <div className="relative">
-            <button 
-              onClick={() => setShowDropdown(!showDropdown)}
-              className="w-10 h-10 bg-blue-600 rounded-full text-white flex items-center justify-center focus:outline-none"
-            >
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-              </svg>
-            </button>
-            {showDropdown && (
-              <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1">
-                <button 
-                  onClick={() => {setCurrentPage('profile'); setShowDropdown(false);}}
-                  className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                >
-                  Profile
-                </button>
-                <button 
-                  onClick={handleLogout}
-                  className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                >
-                  Logout
-                </button>
-              </div>
-            )}
-          </div>
-        </header>
-
+      <div className="App bg-black min-h-screen flex flex-col">
+        <Header 
+          currentPage={currentPage}
+          setCurrentPage={setCurrentPage}
+          showDropdown={showDropdown}
+          setShowDropdown={setShowDropdown}
+        />
         <main className="flex-grow flex flex-col items-center justify-center p-4">
           {renderMainContent()}
         </main>
