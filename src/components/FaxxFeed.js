@@ -69,7 +69,7 @@ const FaxxFeed = ({ articleId }) => {
 
   return (
     <div className="mt-12">
-      <h3 className="text-2xl font-semibold mb-6 text-gray-100 text-left">Faxx Responses</h3>
+      <h3 className="text-2xl font-semibold mb-6 text-gray-100 text-left">Faxx</h3>
       {faxxResponses.length > 0 ? (
         faxxResponses.map((faxx) => (
           <div key={faxx.id} className={`${getEvidenceTypeColor(faxx.evidenceType)} rounded-lg p-4 mb-4 border border-gray-700`}>
