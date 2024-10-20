@@ -11,6 +11,7 @@ function PostArticle() {
   const [tags, setTags] = useState('');
   const [selectedTab, setSelectedTab] = useState("write");
   const [status, setStatus] = useState('');
+  const [references, setReferences] = useState([{ name: '', url: '' }]);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -24,13 +25,24 @@ function PostArticle() {
     const processedTags = tags.split(',').map(tag => tag.trim().startsWith('#') ? tag.trim() : `#${tag.trim()}`);
 
     // For now, we'll just log the article data
-    console.log('Article submitted:', { title, body, tags: processedTags, author: user.id });
+    console.log('Article submitted:', { title, body, tags: processedTags, author: user.id, references });
 
     // Clear the form fields
     setTitle('');
     setBody('');
     setTags('');
+    setReferences([{ name: '', url: '' }]);
     setStatus('Article submitted successfully!');
+  };
+
+  const handleReferenceChange = (index, field, value) => {
+    const newReferences = [...references];
+    newReferences[index][field] = value;
+    setReferences(newReferences);
+  };
+
+  const addReference = () => {
+    setReferences([...references, { name: '', url: '' }]);
   };
 
   return (
@@ -62,6 +74,36 @@ function PostArticle() {
           onChange={(e) => setTags(e.target.value)}
           className="w-full p-2 rounded-md bg-white bg-opacity-20 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
         />
+        <div className="space-y-2">
+          <h3 className="text-white">References</h3>
+          {references.map((reference, index) => (
+            <div key={index} className="flex space-x-2">
+              <input
+                type="text"
+                placeholder="Reference Name"
+                value={reference.name}
+                onChange={(e) => handleReferenceChange(index, 'name', e.target.value)}
+                required
+                className="flex-1 p-2 rounded-md bg-white bg-opacity-20 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              />
+              <input
+                type="url"
+                placeholder="Reference URL"
+                value={reference.url}
+                onChange={(e) => handleReferenceChange(index, 'url', e.target.value)}
+                required
+                className="flex-1 p-2 rounded-md bg-white bg-opacity-20 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              />
+            </div>
+          ))}
+          <button
+            type="button"
+            onClick={addReference}
+            className="w-8 h-8 bg-white bg-opacity-20 text-white font-bold rounded-full transition duration-300 ease-in-out hover:bg-opacity-30 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-600 flex items-center justify-center"
+          >
+            +
+          </button>
+        </div>
         <button 
           type="submit" 
           className="px-6 py-2 bg-gray-700 text-white font-semibold rounded-md shadow-md transition duration-300 ease-in-out hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-600"
