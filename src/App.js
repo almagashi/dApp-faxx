@@ -13,16 +13,17 @@ function App() {
   const [currentPage, setCurrentPage] = useState('home');
   const [showDropdown, setShowDropdown] = useState(false);
   const [error, setError] = useState(null);
+  const { articles, loading, error: articleError } = ArticlesFeed();
 
   useEffect(() => {
     console.log("Auth state:", { ready, authenticated });
   }, [ready, authenticated]);
 
-  if (error) {
-    return <div>Error: {error.message}</div>;
+  if (error || articleError) {
+    return <div>Error: {error ? error.message : articleError}</div>;
   }
 
-  if (!ready) {
+  if (!ready || loading) {
     return <div>Loading...</div>;
   }
 
@@ -49,7 +50,15 @@ function App() {
         return (
           <div className="w-full max-w-2xl">
             <h2 className="text-2xl text-white mb-6">Latest News</h2>
-              <ArticlesFeed/>
+            {articles.map(article => (
+              <NewsArticle
+                key={article.id}
+                title={article.title}
+                summary={article.summary}
+                author={article.author}
+                tags={article.tags}
+              />
+            ))}
           </div>
         );
     }

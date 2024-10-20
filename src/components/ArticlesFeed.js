@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { ethers } from "ethers";
 import NewsPlatformABI from "./NewsPlatformABI.json"; // Import the ABI of your contract
 
@@ -18,13 +18,14 @@ const fetchArticles = async () => {
 
     // Fetch articles from the contract
     const articles = await contract.getArticles();
-    
-    // Format articles (since arrays and strings come in hex from the blockchain)
+    console.log(articles);
+
     return articles.map((article) => ({
+      id: Math.random().toString(36).substr(2, 9), // Generate a random ID
       title: article.title,
-      body: article.body,
-      tags: article.tags.join(", "), // Convert tags array into a string
-      author: article.author
+      summary: article.body,
+      author: article.author,
+      tags: article.tags
     }));
   } catch (err) {
     console.error("Error fetching articles:", err);
@@ -59,29 +60,7 @@ const ArticlesFeed = () => {
     loadArticles();
   }, []);
 
-  return (
-    <div>
-      <h2>Submitted Articles</h2>
-      {loading ? (
-        <p>Loading articles...</p>
-      ) : error ? (
-        <p>{error}</p>
-      ) : articles.length === 0 ? (
-        <p>No articles have been submitted yet.</p>
-      ) : (
-        <ul>
-          {articles.map((article, index) => (
-            <li key={index}>
-              <h3>{article.title}</h3>
-              <p>{article.body}</p>
-              <p><strong>Tags:</strong> {article.tags}</p>
-              <p><strong>Author:</strong> {article.author}</p>
-            </li>
-          ))}
-        </ul>
-      )}
-    </div>
-  );
+  return { articles, loading, error };
 };
 
 export default ArticlesFeed;
