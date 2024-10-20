@@ -3,6 +3,106 @@
 		"inputs": [
 			{
 				"internalType": "uint256",
+				"name": "_articleId",
+				"type": "uint256"
+			},
+			{
+				"internalType": "string",
+				"name": "_evidence",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "_referenceURL",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "_evidenceType",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "_source",
+				"type": "string"
+			}
+		],
+		"name": "addComment",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "string",
+				"name": "_title",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "_body",
+				"type": "string"
+			},
+			{
+				"internalType": "string[]",
+				"name": "_tags",
+				"type": "string[]"
+			}
+		],
+		"name": "publishArticle",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"name": "articleComments",
+		"outputs": [
+			{
+				"internalType": "string",
+				"name": "evidence",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "referenceURL",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "evidenceType",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "source",
+				"type": "string"
+			},
+			{
+				"internalType": "address",
+				"name": "commenter",
+				"type": "address"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
 				"name": "",
 				"type": "uint256"
 			}
@@ -66,24 +166,47 @@
 	{
 		"inputs": [
 			{
-				"internalType": "string",
-				"name": "_title",
-				"type": "string"
-			},
-			{
-				"internalType": "string",
-				"name": "_body",
-				"type": "string"
-			},
-			{
-				"internalType": "string[]",
-				"name": "_tags",
-				"type": "string[]"
+				"internalType": "uint256",
+				"name": "_articleId",
+				"type": "uint256"
 			}
 		],
-		"name": "publishArticle",
-		"outputs": [],
-		"stateMutability": "nonpayable",
+		"name": "getComments",
+		"outputs": [
+			{
+				"components": [
+					{
+						"internalType": "string",
+						"name": "evidence",
+						"type": "string"
+					},
+					{
+						"internalType": "string",
+						"name": "referenceURL",
+						"type": "string"
+					},
+					{
+						"internalType": "string",
+						"name": "evidenceType",
+						"type": "string"
+					},
+					{
+						"internalType": "string",
+						"name": "source",
+						"type": "string"
+					},
+					{
+						"internalType": "address",
+						"name": "commenter",
+						"type": "address"
+					}
+				],
+				"internalType": "struct NewsPlatform.Comment[]",
+				"name": "",
+				"type": "tuple[]"
+			}
+		],
+		"stateMutability": "view",
 		"type": "function"
 	}
 ]

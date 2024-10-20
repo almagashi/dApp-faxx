@@ -7,7 +7,7 @@ import NewsPlatformABI from "./NewsPlatformABI.json";
 import { ethers } from "ethers";
 
 
-const contractAddress = "0x083dD231FD734ba528BDf82969E70317c139A806";
+const contractAddress = "0xC2D03F42240b1F99914d4e2131Ca214f969cFB3c";
 
 function PostArticle() {
   const { authenticated, user } = usePrivy();

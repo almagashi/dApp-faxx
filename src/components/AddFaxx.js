@@ -1,32 +1,78 @@
 import React, { useState } from 'react';
 import { usePrivy } from '@privy-io/react-auth';
+import { ethers } from "ethers";
+import NewsPlatformABI from "./NewsPlatformABI.json";
 
-function AddFaxx({ onClose }) {
-  const { authenticated, user } = usePrivy();
-  const [evidence, setEvidence] = useState('');
-  const [reference, setReference] = useState('');
-  const [evidenceType, setEvidenceType] = useState('supports');
-  const [faxxSource, setFaxxSource] = useState('');
-  const [status, setStatus] = useState('');
 
-  const handleSubmit = async (event) => {
-    event.preventDefault();
+const AddFaxx = ({ articleId, onSubmit }) => {
+  const [evidence, setEvidence] = useState("");
+  const [referenceURL, setReferenceURL] = useState("");
+  const [evidenceType, setEvidenceType] = useState("supports");
+  const [faxxSource, setFaxxSource] = useState("media outlet");
 
-    if (!authenticated) {
-      setStatus('Please log in to add evidence.');
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (articleId === undefined || articleId === null) {
+      alert("Article ID is missing. Please ensure you're submitting faxx for a valid article.");
       return;
     }
-
-    console.log('faxx submitted:', { evidence, reference, evidenceType, faxxSource, author: user.id });
-
-    setEvidence('');
-    setReference('');
-    setEvidenceType('supports');
-    setFaxxSource('');
-    setStatus('faxx submitted successfully!');
-
-    onClose();
+    const faxx = {
+      articleId,
+      evidence,
+      referenceURL,
+      evidenceType,
+      faxxSource
+    };
+    await submitFaxx(faxx);
+    onSubmit();
   };
+
+
+const contractAddress = "0xC2D03F42240b1F99914d4e2131Ca214f969cFB3c";
+
+const submitFaxx = async (faxx) => {
+  if (!window.ethereum) {
+    alert("Please install MetaMask to interact with this feature.");
+    return;
+  }
+
+  try {
+    const provider = new ethers.providers.Web3Provider(window.ethereum);
+    const signer = provider.getSigner();
+    const contract = new ethers.Contract(contractAddress, NewsPlatformABI, signer);
+
+    // Ensure all parameters are properly formatted
+    const formattedArticleId = ethers.BigNumber.from(faxx.articleId.toString());
+    const formattedEvidence = faxx.evidence || "";
+    const formattedReferenceURL = faxx.referenceURL || "";
+    const formattedEvidenceType = faxx.evidenceType || "";
+    const formattedFaxxSource = faxx.faxxSource || "";
+
+    console.log("Submitting faxx with:", {
+      articleId: formattedArticleId.toString(),
+      evidence: formattedEvidence,
+      referenceURL: formattedReferenceURL,
+      evidenceType: formattedEvidenceType,
+      faxxSource: formattedFaxxSource
+    });
+
+    // Publish faxx linked to the article
+    const tx = await contract.addComment(
+      formattedArticleId,
+      formattedEvidence,
+      formattedReferenceURL,
+      formattedEvidenceType,
+      formattedFaxxSource
+    );
+    await tx.wait();
+    alert("faxx successfully submitted!");
+  } catch (err) {
+    console.error("Error submitting faxx:", err);
+    alert("Failed to submit faxx. Error: " + err.message);
+  }
+};
+
+
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4 bg-black p-6 rounded-lg border border-gray-800">
@@ -44,8 +90,8 @@ function AddFaxx({ onClose }) {
         <input
           type="text"
           placeholder="Reference (URL)"
-          value={reference}
-          onChange={(e) => setReference(e.target.value)}
+          value={referenceURL}
+          onChange={(e) => setReferenceURL(e.target.value)}
           className="flex-grow p-3 rounded-md bg-gray-900 text-white placeholder-gray-500 border border-gray-800 focus:border-gray-700 focus:ring-1 focus:ring-gray-700 transition duration-300"
         />
       </div>
@@ -70,7 +116,7 @@ function AddFaxx({ onClose }) {
           className="w-full p-3 rounded-md bg-gray-900 text-white border border-gray-800 focus:border-gray-700 focus:ring-1 focus:ring-gray-700 transition duration-300"
         >
           <option value="">Select a source</option>
-          <option value="media_outlet">Media Outlet</option>
+          <option value="f">Media Outlet</option>
           <option value="scientific_journal">Scientific Journal</option>
           <option value="social_media">Social Media</option>
           <option value="subject_matter_expert">Subject Matter Expert</option>

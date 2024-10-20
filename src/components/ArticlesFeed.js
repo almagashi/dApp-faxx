@@ -1,8 +1,13 @@
 import { useEffect, useState } from "react";
 import { ethers } from "ethers";
 import NewsPlatformABI from "./NewsPlatformABI.json"; // Import the ABI of your contract
+import FaxxFeed from "./FaxxFeed";
+import AddFaxx from "./AddFaxx";
+import NewsArticle from "./NewsArticle";
+import Profile from './Profile';
+import PostArticle from './PostArticle';
 
-const contractAddress = "0x083dD231FD734ba528BDf82969E70317c139A806";
+const contractAddress = "0xC2D03F42240b1F99914d4e2131Ca214f969cFB3c";
 
 const fetchArticles = async () => {
   if (!window.ethereum) {
@@ -11,17 +16,15 @@ const fetchArticles = async () => {
   }
 
   try {
-    // Connect to the Ethereum provider
     const provider = new ethers.providers.Web3Provider(window.ethereum);
     const signer = provider.getSigner();
     const contract = new ethers.Contract(contractAddress, NewsPlatformABI, signer);
 
-    // Fetch articles from the contract
     const articles = await contract.getArticles();
     console.log(articles);
 
-    return articles.map((article) => ({
-      id: Math.random().toString(36).substr(2, 9), // Generate a random ID
+    return articles.map((article, index) => ({
+      articleId: index,
       title: article.title,
       summary: article.body,
       author: article.author,
@@ -29,11 +32,25 @@ const fetchArticles = async () => {
     }));
   } catch (err) {
     console.error("Error fetching articles:", err);
-    if (err.code === 'CALL_EXCEPTION') {
-      alert("There was an error calling the smart contract. Please make sure you're connected to the correct network and the contract is deployed.");
-    } else {
-      alert("An error occurred while fetching articles. Please try again later.");
-    }
+    const errorMessage = err.code === 'CALL_EXCEPTION'
+      ? "There was an error calling the smart contract. Please make sure you're connected to the correct network and the contract is deployed."
+      : "An error occurred while fetching articles. Please try again later.";
+    alert(errorMessage);
+    return [];
+  }
+};
+
+const fetchFaxx = async (articleId) => {
+  try {
+    const provider = new ethers.providers.Web3Provider(window.ethereum);
+    const contract = new ethers.Contract(contractAddress, NewsPlatformABI, provider);
+
+    const faxx = await contract.getComments(articleId);
+    return faxx.map(({ evidence, referenceURL, evidenceType, source: faxxSource, commenter }) => 
+      ({ evidence, referenceURL, evidenceType, faxxSource, commenter })
+    );
+  } catch (err) {
+    console.error("Error fetching faxx:", err);
     return [];
   }
 };
@@ -60,7 +77,28 @@ const ArticlesFeed = () => {
     loadArticles();
   }, []);
 
-  return { articles, loading, error };
+  if (loading) {
+    return <div>Loading articles...</div>;
+  }
+
+  if (error) {
+    return <div>Error: {error}</div>;
+  }
+
+  return (
+    <div>
+      {articles.map((article) => (
+        <NewsArticle
+          key={article.articleId}
+          id={article.articleId}
+          title={article.title}
+          summary={article.summary}
+          author={article.author}
+          tags={article.tags}
+        />
+      ))}
+    </div>
+  );
 };
 
 export default ArticlesFeed;
