@@ -6,6 +6,7 @@ import Profile from './components/Profile';
 import PostArticle from './components/PostArticle';
 import Login from './components/Login';
 import useAuth from './components/useAuth';
+import faxxLogo from "./faxx_dark.png";
 
 function App() {
   const { authenticated, login } = useAuth();
@@ -31,7 +32,14 @@ function App() {
   };
 
   if (!authenticated) {
-    return <Login onLogin={login} />;
+    return (
+      <div className="App bg-black min-h-screen flex flex-col items-center justify-center text-white">
+        <img src={faxxLogo} alt="Faxx Logo" className="w-48 mb-8" />
+        <h1 className="text-4xl font-bold mb-4">Welcome to Faxx</h1>
+        <p className="text-xl mb-8">Get your facts checked and stay informed</p>
+        <Login onLogin={login} />
+      </div>
+    );
   }
 
   return (
