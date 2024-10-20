@@ -7,6 +7,7 @@ import Profile from './components/Profile';
 import NewsArticle from './components/NewsArticle';
 import "react-mde/lib/styles/css/react-mde-all.css";
 import ArticlesFeed from './components/ArticlesFeed';
+import AddFaxx from './components/AddFaxx';
 
 function App() {
   const { ready, authenticated, login } = usePrivy();
@@ -14,6 +15,8 @@ function App() {
   const [showDropdown, setShowDropdown] = useState(false);
   const [error, setError] = useState(null);
   const { articles, loading, error: articleError } = ArticlesFeed();
+  const [isAddFaxxOpen, setIsAddFaxxOpen] = useState(false);
+  const [currentArticle, setCurrentArticle] = useState(null);
 
   useEffect(() => {
     console.log("Auth state:", { ready, authenticated });
@@ -40,6 +43,11 @@ function App() {
     );
   }
 
+  const handleAddFaxx = (article) => {
+    setCurrentArticle(article);
+    setIsAddFaxxOpen(true);
+  };
+
   const renderMainContent = () => {
     switch (currentPage) {
       case 'profile':
@@ -49,40 +57,49 @@ function App() {
       default:
         return (
           <div className="w-full max-w-2xl">
-            <h2 className="text-2xl text-white mb-6">Latest News</h2>
-            {articles.map(article => (
-              <NewsArticle
-                key={article.id}
-                title={article.title}
-                summary={article.summary}
-                author={article.author}
-                tags={article.tags}
-              />
+            <h2 className="text-2xl text-white mb-6">Recent Claims</h2>
+            {articles.map((article, index) => (
+              <div key={article.id} className="mb-6">
+                <NewsArticle
+                  title={article.title}
+                  summary={article.summary}
+                  author={article.author}
+                  tags={article.tags}
+                  onAddFaxx={() => handleAddFaxx(article)}
+                />
+              </div>
             ))}
           </div>
         );
     }
   };
 
-  try {
-    return (
-      <div className="App bg-black min-h-screen flex flex-col">
-        <Header 
-          currentPage={currentPage}
-          setCurrentPage={setCurrentPage}
-          showDropdown={showDropdown}
-          setShowDropdown={setShowDropdown}
-        />
-        <main className="flex-grow flex flex-col items-center justify-center p-4">
-          {renderMainContent()}
-        </main>
-      </div>
-    );
-  } catch (err) {
-    console.error("Render error:", err);
-    setError(err);
-    return null;
-  }
+  return (
+    <div className="App bg-black min-h-screen flex flex-col">
+      <Header 
+        currentPage={currentPage}
+        setCurrentPage={setCurrentPage}
+        showDropdown={showDropdown}
+        setShowDropdown={setShowDropdown}
+      />
+      <main className="flex-grow flex flex-col items-center justify-center p-4">
+        {renderMainContent()}
+      </main>
+      {isAddFaxxOpen && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-gray-800 p-6 rounded-lg relative max-w-2xl w-full">
+            <button
+              onClick={() => setIsAddFaxxOpen(false)}
+              className="absolute top-2 right-2 text-white hover:text-gray-300"
+            >
+              ×
+            </button>
+            <AddFaxx article={currentArticle} onClose={() => setIsAddFaxxOpen(false)} />
+          </div>
+        </div>
+      )}
+    </div>
+  );
 }
 
 export default App;
