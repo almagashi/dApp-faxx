@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { ethers } from "ethers";
 import NewsPlatformABI from "./NewsPlatformABI.json";
 
-const contractAddress = "0xC2D03F42240b1F99914d4e2131Ca214f969cFB3c";
+const contractAddress = "0x34a773530e3A2D5baf2B1b96761086Bc81EA9C4D";
 
 const fetchFaxx = async (articleId) => {
   try {
