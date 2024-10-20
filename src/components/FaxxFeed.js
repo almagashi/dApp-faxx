@@ -26,6 +26,7 @@ const fetchFaxx = async (articleId) => {
   
 const FaxxFeed = ({ articleId }) => {
   const [faxxResponses, setFaxxResponses] = useState([]);
+  const [showCommenterAddresses, setShowCommenterAddresses] = useState({});
 
   useEffect(() => {
     const loadFaxx = async () => {
@@ -67,15 +68,31 @@ const FaxxFeed = ({ articleId }) => {
     );
   };
 
+  const toggleCommenterAddress = (id) => {
+    setShowCommenterAddresses(prev => ({
+      ...prev,
+      [id]: !prev[id]
+    }));
+  };
+
   return (
     <div className="mt-12">
-      <h3 className="text-2xl font-semibold mb-6 text-gray-100 text-left">Faxx</h3>
+      <h3 className="text-2xl font-semibold mb-6 text-gray-100 text-left">faxx</h3>
       {faxxResponses.length > 0 ? (
         faxxResponses.map((faxx) => (
           <div key={faxx.id} className={`${getEvidenceTypeColor(faxx.evidenceType)} rounded-lg p-4 mb-4 border border-gray-700`}>
             <p className="text-gray-300 mb-2 text-left">{faxx.evidence}</p>
             <div className="text-sm text-gray-400 text-left">
-              <span>{faxx.commenter} • {faxx.timestamp}</span>
+              <button
+                onClick={() => toggleCommenterAddress(faxx.id)}
+                className="flex items-center focus:outline-none"
+              >
+                <svg className="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                  <path fillRule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clipRule="evenodd" />
+                </svg>
+                {showCommenterAddresses[faxx.id] ? faxx.commenter : 'Show Address'}
+              </button>
+              <span> • {faxx.timestamp}</span>
             </div>
             <div className="text-sm text-gray-500 mt-2 text-left">
               <span>Source: {faxx.faxxSource} • </span>
