@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { usePrivy } from '@privy-io/react-auth';
 import { ethers } from "ethers";
 import NewsPlatformABI from "./NewsPlatformABI.json";
-
+const contractAddress = "0x34a773530e3A2D5baf2B1b96761086Bc81EA9C4D";
 
 const AddFaxx = ({ articleId, onSubmit }) => {
   const [evidence, setEvidence] = useState("");
@@ -26,9 +26,6 @@ const AddFaxx = ({ articleId, onSubmit }) => {
     await submitFaxx(faxx);
     onSubmit();
   };
-
-
-const contractAddress = "0xC2D03F42240b1F99914d4e2131Ca214f969cFB3c";
 
 const submitFaxx = async (faxx) => {
   if (!window.ethereum) {
