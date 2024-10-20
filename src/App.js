@@ -31,6 +31,22 @@ function App() {
       date: "2024-03-14",
       tags: ["Cryptocurrency", "Market", "Finance"]
     },
+    {
+      id: 3,
+      title: "New Decentralized Social Media Platform Launches",
+      summary: "A revolutionary social media platform built on blockchain technology promises to give users full control over their data and content.",
+      author: "Alice Johnson",
+      date: "2024-03-13",
+      tags: ["Social Media", "Blockchain", "Privacy"]
+    },
+    {
+      id: 4,
+      title: "Major Bank Adopts Cryptocurrency for International Transfers",
+      summary: "One of the world's largest banks announces the integration of a stablecoin for faster and cheaper international money transfers.",
+      author: "Robert Chen",
+      date: "2024-03-12",
+      tags: ["Banking", "Cryptocurrency", "Finance"]
+    }
     // Add more mock articles as needed
   ];
 
