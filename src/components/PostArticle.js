@@ -16,6 +16,7 @@ function PostArticle() {
   const [tags, setTags] = useState('');
   const [selectedTab, setSelectedTab] = useState("write");
   const [status, setStatus] = useState('');
+  const [references, setReferences] = useState([{ name: '', url: '' }]);
 
   const publishArticle = async (article) => {
     if (!window.ethereum) {
