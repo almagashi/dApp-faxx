@@ -28,7 +28,7 @@ function Header({ currentPage, setCurrentPage, showDropdown, setShowDropdown }) 
               onClick={() => setCurrentPage('postArticle')}
               className="mr-4 px-4 py-2 bg-gray-800 text-gray-300 rounded-md text-sm hover:bg-gray-700 transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-gray-600"
             >
-              Post claim to get it faxx-checked
+              get faxx-checked
             </button>
           )}
           <div className="relative">

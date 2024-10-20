@@ -7,8 +7,8 @@ function NewsArticle({ title, summary, author, tags, onAddFaxx }) {
   const [showAuthorId, setShowAuthorId] = useState(false);
   const [showPopup, setShowPopup] = useState(false);
   
-  // Mock faxx responses
-  const [faxxResponses] = useState([
+  // Mock faxx responses with upvotes and downvotes
+  const [faxxResponses, setFaxxResponses] = useState([
     {
       id: 1,
       content: "Recent studies show that renewable energy costs have decreased by 82% since 2010, making it cheaper than fossil fuels in many regions.",
@@ -16,7 +16,9 @@ function NewsArticle({ title, summary, author, tags, onAddFaxx }) {
       timestamp: "2023-05-15 14:30",
       evidenceType: "supports",
       source: "Scientific Journal",
-      url: "https://www.nature.com/articles/s41560-023-01209-8"
+      url: "https://www.nature.com/articles/s41560-023-01209-8",
+      upvotes: 15,
+      downvotes: 2
     },
     {
       id: 2,
@@ -25,7 +27,9 @@ function NewsArticle({ title, summary, author, tags, onAddFaxx }) {
       timestamp: "2023-05-16 09:45",
       evidenceType: "challenges",
       source: "Media Outlet",
-      url: "https://www.economist.com/special-report/2023/04/24/the-energy-transition-is-running-into-supply-problems"
+      url: "https://www.economist.com/special-report/2023/04/24/the-energy-transition-is-running-into-supply-problems",
+      upvotes: 8,
+      downvotes: 3
     },
     {
       id: 3,
@@ -34,7 +38,9 @@ function NewsArticle({ title, summary, author, tags, onAddFaxx }) {
       timestamp: "2023-05-17 11:20",
       evidenceType: "rejects",
       source: "Subject Matter Expert",
-      url: "https://www.linkedin.com/pulse/true-cost-intermittent-renewables-paul-martin"
+      url: "https://www.linkedin.com/pulse/true-cost-intermittent-renewables-paul-martin",
+      upvotes: 6,
+      downvotes: 7
     },
     {
       id: 4,
@@ -43,19 +49,21 @@ function NewsArticle({ title, summary, author, tags, onAddFaxx }) {
       timestamp: "2023-05-18 16:05",
       evidenceType: "context",
       source: "Official Document",
-      url: "https://www.iea.org/reports/energy-subsidies-2023"
+      url: "https://www.iea.org/reports/energy-subsidies-2023",
+      upvotes: 12,
+      downvotes: 1
     }
   ]);
 
   const tagColors = [
-    'bg-gray-900',
     'bg-gray-800',
     'bg-gray-700',
-    'bg-zinc-900',
+    'bg-gray-600',
     'bg-zinc-800',
     'bg-zinc-700',
-    'bg-slate-900',
-    'bg-slate-800'
+    'bg-zinc-600',
+    'bg-slate-800',
+    'bg-slate-700'
   ];
 
   const handleReadMore = () => {
@@ -69,16 +77,26 @@ function NewsArticle({ title, summary, author, tags, onAddFaxx }) {
   const getEvidenceTypeColor = (evidenceType) => {
     switch (evidenceType) {
       case 'supports':
-        return 'bg-green-900 bg-opacity-30';
+        return 'bg-green-900 bg-opacity-20';
       case 'challenges':
-        return 'bg-yellow-900 bg-opacity-30';
+        return 'bg-yellow-900 bg-opacity-20';
       case 'rejects':
-        return 'bg-red-900 bg-opacity-30';
+        return 'bg-red-900 bg-opacity-20';
       case 'context':
-        return 'bg-blue-900 bg-opacity-30';
+        return 'bg-blue-900 bg-opacity-20';
       default:
         return 'bg-gray-800';
     }
+  };
+
+  const handleVote = (id, voteType) => {
+    setFaxxResponses(prevResponses =>
+      prevResponses.map(faxx =>
+        faxx.id === id
+          ? { ...faxx, [voteType]: faxx[voteType] + 1 }
+          : faxx
+      )
+    );
   };
 
   return (
@@ -157,6 +175,26 @@ function NewsArticle({ title, summary, author, tags, onAddFaxx }) {
                     <div className="text-sm text-gray-500 mt-2 text-left">
                       <span>Source: {faxx.source} • </span>
                       <a href={faxx.url} target="_blank" rel="noopener noreferrer" className="text-blue-400 hover:underline">Reference</a>
+                    </div>
+                    <div className="mt-2 flex items-center space-x-4">
+                      <button 
+                        onClick={() => handleVote(faxx.id, 'upvotes')}
+                        className="flex items-center text-gray-400 hover:text-gray-300"
+                      >
+                        <svg className="w-5 h-5 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                          <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-11a1 1 0 10-2 0v3.586L7.707 9.293a1 1 0 00-1.414 1.414l3 3a1 1 0 001.414 0l3-3a1 1 0 00-1.414-1.414L11 10.586V7z" clipRule="evenodd" />
+                        </svg>
+                        {faxx.upvotes}
+                      </button>
+                      <button 
+                        onClick={() => handleVote(faxx.id, 'downvotes')}
+                        className="flex items-center text-gray-400 hover:text-gray-300"
+                      >
+                        <svg className="w-5 h-5 mr-1 transform rotate-180" fill="currentColor" viewBox="0 0 20 20">
+                          <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-11a1 1 0 10-2 0v3.586L7.707 9.293a1 1 0 00-1.414 1.414l3 3a1 1 0 001.414 0l3-3a1 1 0 00-1.414-1.414L11 10.586V7z" clipRule="evenodd" />
+                        </svg>
+                        {faxx.downvotes}
+                      </button>
                     </div>
                   </div>
                 ))
