@@ -35,7 +35,7 @@ function App() {
         showDropdown={showDropdown}
         setShowDropdown={setShowDropdown}
       />
-      <main className="flex-grow flex flex-col items-center justify-center p-4">
+      <main className="flex-grow w-full px-4 py-8">
         {renderMainContent()}
       </main>
       {isAddFaxxOpen && (

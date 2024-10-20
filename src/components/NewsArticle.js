@@ -1,9 +1,13 @@
 import React, { useState } from 'react';
 import AddFaxx from './AddFaxx';
 import FaxxFeed from './FaxxFeed';
+import Popup from './Popup';
 
 const NewsArticle = ({ id, title, summary, author, tags }) => {
   const [showAddFaxx, setShowAddFaxx] = useState(false);
+  const [showPopup, setShowPopup] = useState(false);
+  const [showAuthorId, setShowAuthorId] = useState(false);
+  const [showFullSummary, setShowFullSummary] = useState(false);
 
   const handleAddFaxx = () => {
     setShowAddFaxx(true);
@@ -14,11 +18,8 @@ const NewsArticle = ({ id, title, summary, author, tags }) => {
     setShowAddFaxx(false);
   };
 
-  const [showAuthorId, setShowAuthorId] = useState(false);
-  const [showFullSummary, setShowFullSummary] = useState(false);
-
   const handleReadMore = () => {
-    setShowFullSummary(!showFullSummary);
+    setShowPopup(true);
   };
 
   const tagColors = [
@@ -30,7 +31,7 @@ const NewsArticle = ({ id, title, summary, author, tags }) => {
   ];
 
   return (
-    <div className="bg-gray-900 bg-opacity-50 rounded-xl p-6 mb-6 w-full max-w-2xl border border-gray-800 hover:border-gray-700 transition-colors duration-300">
+    <div className="bg-gray-900 bg-opacity-50 rounded-xl p-6 mb-6 w-full border border-gray-800 hover:border-gray-700 transition-colors duration-300">
       <h3 className="text-xl font-semibold text-white mb-2 text-left">{title}</h3>
       <div className="text-gray-300 mb-4 text-left">
         {showFullSummary ? summary : `${summary.slice(0, 150)}...`}
@@ -71,10 +72,24 @@ const NewsArticle = ({ id, title, summary, author, tags }) => {
       </div>
 
       {showAddFaxx && (
-        <AddFaxx articleId={id} onSubmit={handleSubmitFaxx} />
+        <Popup onClose={() => setShowAddFaxx(false)}>
+          <div className="bg-gray-900 p-6 rounded-xl w-full max-w-2xl">
+            <AddFaxx articleId={id} onSubmit={handleSubmitFaxx} />
+          </div>
+        </Popup>
       )}
 
       <FaxxFeed articleId={id} />
+
+      {showPopup && (
+        <Popup onClose={() => setShowPopup(false)}>
+          <div className="text-white bg-gray-900 p-6 rounded-xl w-full">
+            <h2 className="text-2xl font-bold mb-4">{title}</h2>
+            <p className="text-gray-300 mb-4">{summary}</p>
+            {/* Add more details here if needed */}
+          </div>
+        </Popup>
+      )}
     </div>
   );
 };

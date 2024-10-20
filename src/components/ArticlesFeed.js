@@ -1,3 +1,4 @@
+import React from 'react';
 import { useEffect, useState } from "react";
 import { ethers } from "ethers";
 import NewsPlatformABI from "./NewsPlatformABI.json"; // Import the ABI of your contract
@@ -86,8 +87,8 @@ const ArticlesFeed = () => {
   }
 
   return (
-    <div>
-      {articles.map((article) => (
+    <div className="w-full max-w-4xl mx-auto px-4">
+      {articles.map(article => (
         <NewsArticle
           key={article.articleId}
           id={article.articleId}

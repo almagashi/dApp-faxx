@@ -75,61 +75,61 @@ const submitFaxx = async (faxx) => {
 
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4 bg-black p-6 rounded-lg border border-gray-800">
+    <form onSubmit={handleSubmit} className="space-y-4">
       <div>
-        <label htmlFor="evidence" className="block text-sm font-medium text-gray-300 mb-2">add your faxx here.</label>
+        <label htmlFor="evidence" className="block text-sm font-medium text-gray-300 mb-2">Add your faxx here</label>
         <textarea
           id="evidence"
           value={evidence}
           onChange={(e) => setEvidence(e.target.value)}
-          placeholder="enter your chain-of-thought here..."
-          className="w-full p-3 rounded-md bg-gray-900 text-white placeholder-gray-500 resize-y min-h-[150px] border border-gray-800 focus:border-gray-700 focus:ring-1 focus:ring-gray-700 transition duration-300"
+          placeholder="Enter your chain-of-thought here..."
+          className="w-full p-3 rounded-md bg-gray-800 text-white placeholder-gray-500 resize-y min-h-[150px] border border-gray-700 focus:border-gray-600 focus:ring-1 focus:ring-gray-600 transition duration-300"
         />
       </div>
       <div className="flex items-center space-x-2">
         <input
           type="text"
-          placeholder="reference (url)"
+          placeholder="Reference (URL)"
           value={referenceURL}
           onChange={(e) => setReferenceURL(e.target.value)}
-          className="flex-grow p-3 rounded-md bg-gray-900 text-white placeholder-gray-500 border border-gray-800 focus:border-gray-700 focus:ring-1 focus:ring-gray-700 transition duration-300"
+          className="flex-grow p-3 rounded-md bg-gray-800 text-white placeholder-gray-500 border border-gray-700 focus:border-gray-600 focus:ring-1 focus:ring-gray-600 transition duration-300"
         />
       </div>
       <div className="space-y-2">
-        <p className="text-gray-300 text-sm">how does your faxx relate to the claim?</p>
+        <p className="text-gray-300 text-sm">How does your faxx relate to the claim?</p>
         <select
           value={evidenceType}
           onChange={(e) => setEvidenceType(e.target.value)}
-          className="w-full p-3 rounded-md bg-gray-900 text-white border border-gray-800 focus:border-gray-700 focus:ring-1 focus:ring-gray-700 transition duration-300"
+          className="w-full p-3 rounded-md bg-gray-800 text-white border border-gray-700 focus:border-gray-600 focus:ring-1 focus:ring-gray-600 transition duration-300"
         >
-          <option value="supports">supports the claim</option>
-          <option value="challenges">challenges the claim </option>
-          <option value="rejects">rejects the claim </option>
-          <option value="context">provides additional context</option>
+          <option value="supports">Supports the claim</option>
+          <option value="challenges">Challenges the claim</option>
+          <option value="rejects">Rejects the claim</option>
+          <option value="context">Provides additional context</option>
         </select>
       </div>
       <div className="space-y-2">
-        <p className="text-gray-300 text-sm">where does this faxx come from?</p>
+        <p className="text-gray-300 text-sm">Where does this faxx come from?</p>
         <select
           value={faxxSource}
           onChange={(e) => setFaxxSource(e.target.value)}
-          className="w-full p-3 rounded-md bg-gray-900 text-white border border-gray-800 focus:border-gray-700 focus:ring-1 focus:ring-gray-700 transition duration-300"
+          className="w-full p-3 rounded-md bg-gray-800 text-white border border-gray-700 focus:border-gray-600 focus:ring-1 focus:ring-gray-600 transition duration-300"
         >
-          <option value="">select a source</option>
-          <option value="media_outlet">media outlet</option>
-          <option value="scientific_journal">scientific journal</option>
-          <option value="social_media">social media</option>
-          <option value="subject_matter_expert">subject matter expert</option>
-          <option value="official_document">official document</option>
-          <option value="first_hand_experience">first-hand experience</option>
-          <option value="book">book</option>
+          <option value="">Select a source</option>
+          <option value="media_outlet">Media outlet</option>
+          <option value="scientific_journal">Scientific journal</option>
+          <option value="social_media">Social media</option>
+          <option value="subject_matter_expert">Subject matter expert</option>
+          <option value="official_document">Official document</option>
+          <option value="first_hand_experience">First-hand experience</option>
+          <option value="book">Book</option>
         </select>
       </div>
       <button 
         type="submit" 
-        className="px-4 py-2 bg-gradient-to-r from-gray-500 to-gray-700 text-white font-bold rounded-md shadow-lg transition duration-300 ease-in-out hover:from-gray-600 hover:to-gray-800 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-opacity-50 transform hover:scale-105"
+        className="w-full px-4 py-2 bg-gradient-to-r from-gray-700 to-gray-800 text-white font-bold rounded-md shadow-lg transition duration-300 ease-in-out hover:from-gray-800 hover:to-gray-900 focus:outline-none focus:ring-2 focus:ring-gray-600 focus:ring-opacity-50"
       >
-        faxx-check it
+        Faxx-check it
       </button>
     </form>
   );
