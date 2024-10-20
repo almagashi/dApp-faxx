@@ -1,6 +1,13 @@
 import React from 'react';
+import AddFaxx from './AddFaxx';
 
 function NewsArticle({ title, summary, author, date, tags, factCheckedBy }) {
+  const [showAddFaxx, setShowAddFaxx] = React.useState(false);
+
+  const handleAddFaxxClick = () => {
+    setShowAddFaxx(true);
+  };
+
   return (
     <div className="bg-gray-900 bg-opacity-50 rounded-xl p-6 mb-6 w-full max-w-2xl border border-gray-800 hover:border-gray-700 transition-colors duration-300">
       <h2 className="text-xl text-white font-semibold mb-2">{title}</h2>
@@ -16,6 +23,12 @@ function NewsArticle({ title, summary, author, date, tags, factCheckedBy }) {
           </svg>
           {factCheckedBy} 3+
         </span>
+        <button 
+          className="px-3 py-1 bg-gray-800 text-gray-300 rounded-md text-xs hover:bg-gray-700 transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-gray-600"
+          onClick={handleAddFaxxClick}
+        >
+          Add Faxx
+        </button>
       </div>
       <div className="mt-4 flex flex-wrap gap-2">
         {tags.map((tag, index) => (
@@ -24,6 +37,7 @@ function NewsArticle({ title, summary, author, date, tags, factCheckedBy }) {
           </span>
         ))}
       </div>
+      {showAddFaxx && <AddFaxx />}
     </div>
   );
 }
