@@ -1,6 +1,6 @@
 
-# _faxx - dApp
-Decentralized crowd-sourced truth.
+# faxx_
+Decentralized crowd-sourced truth ➡️  https://massive-xylophone-curved.on-fleek.app/
 
 
 ## Features
@@ -55,9 +55,9 @@ To deploy this project run, git clone then in root of project
 ```
 
 
-## Authors
+## Developers
 
-- [@almagashi](https://github.com/almagashi/)
-- [@rhythmehta](https://github.com/rhythmehta/)
+- [github@rhythmehta](https://github.com/rhythmehta/) / [linkedin/rhythmehta](https://www.linkedin.com/in/rhythmehta/)
+- [github@almagashi](https://github.com/almagashi/) / [linkedin/almagashi](https://www.linkedin.com/in/almagashi/)
 
 ![_fleek_logo_white](https://raw.githubusercontent.com/almagashi/dApp-faxx/dfdb19cd4b9fd330039153d2e1515439910c8513/src/faxx_dark.png)
